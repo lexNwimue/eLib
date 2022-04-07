@@ -1,0 +1,155 @@
+<%- include('./layouts/admin_layout/header.ejs') %>
+    <%- include('./layouts/admin_layout/sidebar.ejs') %>
+
+        <body class="skin-blue">
+            <div class="wrapper">
+                <div class="content-wrapper" style="min-height: 1283px;">
+                    <!-- Content Header (Page header) -->
+                    <section class="content-header">
+                        <h1>
+                            Admin Dashboard > Books
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="active">Dashboard</li>
+                        </ol>
+                    </section>
+
+                    <!-- Main content -->
+                    <section class="content">
+                        <%- include('./layouts/admin_layout/content-head.ejs') %>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="box">
+                                        <div class="box-header">
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body ">
+                                            <ul class="nav nav-tabs">
+                                                <li class="nav-item active">
+                                                    <a href="#all-users" class="nav-link" data-toggle="tab">All
+                                                        Books</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#owing-users" class="nav-link" data-toggle="tab">Borrowed
+                                                        Books</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#non-owing-users" class="nav-link"
+                                                        data-toggle="tab">Available
+                                                        Books</a>
+                                                </li>
+                                            </ul>
+
+                                            <!-- Tab Panes -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="all-users">
+                                                    <table id="example1"
+                                                        class="table table-bordered table-striped responsive table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">S/N</th>
+                                                                <th class="text-center">Title</th>
+                                                                <th class="text-center">Author</th>
+                                                                <th class="text-center">Publisher</th>
+                                                                <th class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% var i=1; %>
+                                                                <% books.forEach(book=> { %>
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            <%= i++; %>.
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= book.title %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= book.author %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= book.publisher %>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <div class="btn-group">
+                                                                                <a class="btn btn-info" target="blank" onclick="console.log(1)" href="/dashboard/view-books/<%=book._id%>"><i
+                                                                                        class="fa fa-eye"></i>
+                                                                                        
+                                                                                </a>
+                                                                                <button data-id="<%=book._id%>"
+                                                                                    data-name="<%=book.title%>"
+                                                                                    class="btn btn-danger delete-book"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#delete-book-modal"><span
+                                                                                        class="fa fa-trash delete-span"></span></button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% }) %>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                                <div class="tab-pane container fade" id="owing-users">Owing Users</div>
+                                                <div class="tab-pane container fade" id="non-owing-users">Non-Owing
+                                                    Users
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </div>
+                            </div>
+
+                            <!-- Modal for removing book -->
+                            <div id="delete-book-modal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h3 class="modal-title text-center">Delete Book</h3>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <p>Are you sure you want to delete?
+                                            <h4><span id="modal-book-id"></span></h4>
+                                            <span id="modal-book-name"></span>
+
+                                            <div
+                                                style="display: flex; justify-content: space-around; align-items: center; ">
+                                                <button class="btn btn-danger" id="delete-book-btn">Yes</button>
+                                                <button class="btn btn-secondary ml-5">No</button>
+                                            </div>
+
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                    </section><!-- /.content -->
+                </div>
+                <%- include('./layouts/admin_layout/footer.ejs') %>
+
+
+                    <script>
+                        $(document).ready(function () {
+                            // Getting the clicked book ID for the delete operation and loading the title into the modal header
+                            $('.delete-book').click(() => {
+                                bookID = $(this).data('id');
+                                bookTitle = $(this).data('name');
+                                $('#modal-book-id').html(bookTitle);
+                                console.log(bookID, bookTitle);
+                            })
+
+                            // When user clicks 'Yes' on delete book modal
+                            $('#delete-book-btn').click(() => {
+                                bookID = $(this).data('id');
+
+                            })
+                        });
+                    </script>
+        </body>
+
+        </html>

@@ -1,0 +1,129 @@
+<%- include('./layouts/user_layout/header.ejs') %>
+    <%- include('./layouts/user_layout/sidebar.ejs') %>
+
+        <body class="skin-blue">
+            <div class="wrapper">
+                <div class="content-wrapper" style="min-height: 1283px;">
+                    <!-- Content Header (Page header) -->
+                    <section class="content-header">
+                        <h1>
+                            Update Details
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="active">Dashboard</li>
+                        </ol>
+                    </section>
+
+                    <!-- Main content -->
+                    <section class="content">
+                        <%- include('./layouts/user_layout/content-head.ejs') %>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <p>Available Books: </p>
+                                    <select name="available-books" id="available-books" class="form-control">
+                                        <% availableBooks.forEach((book)=> { %>
+                                            <option value="<%=book._id%>">
+                                                <%=book.title%>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                    <br>
+                                    <div style="text-align: center;">
+                                        <button class="btn btn-primary" id="borrow-btn">Borrow</button>
+                                        <div id="request-success"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="table-div" class="row">
+                                <div class="col-lg-12">
+                                    <h5>Request History: </h5>
+                                    <table id="requests-table"
+                                        class="table table-bordered table-striped responsive table-hover col-md-12">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">S/N</th>
+                                                <th class="text-center">Title</th>
+                                                <th class="text-center">Date Requested</th>
+                                                <th class="text-center">Request Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% var i=1; if (requests.length !==0) {%>
+                                                <% try { requests.forEach(request=> { %>
+
+                                                    <tr>
+                                                        <td>
+                                                            <%= i++; %>
+                                                        </td>
+                                                        <td>
+                                                            <%= request.title %>
+                                                        </td>
+
+                                                        <td>
+                                                            <%= request.createdAt.toLocaleDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= request.status %>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <% });} catch (err) { }} %>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                    </section><!-- /.content -->
+                </div>
+
+                <%- include('./layouts/user_layout/footer.ejs') %>
+                    <script>
+                        $('#borrow-btn').on('click', (e) => {
+                            e.preventDefault();
+                            const selectedBook = document.getElementById('available-books'),
+                                title = selectedBook.options[selectedBook.selectedIndex].text,
+                                bookID = selectedBook.options[selectedBook.selectedIndex].value,
+                                userID = '<%=user._id %>';
+                            console.log(title, bookID, userID);
+                            $.post('/dashboard/user/send-request', { userID, bookID, title })
+                                .done((data) => {
+                                    console.log(data);
+                                    if (data.failed) {
+                                        const alertDiv = document.getElementById('request-success');
+                                        alertDiv.innerHTML = 'Failed: Request already made!';
+                                        alertDiv.classList.add('alert-danger');
+                                        alertDiv.classList.add('d-block');
+
+
+                                        setTimeout(() => {
+                                            alertDiv.innerHTML = '';
+                                            alertDiv.classList.remove('alert');
+                                            alertDiv.classList.remove('alert-danger');
+                                        }, 6000)
+                                    }
+                                    else {
+                                        const alertDiv = document.getElementById('request-success');
+                                        alertDiv.innerHTML = 'Request sent successfully...';
+                                        alertDiv.classList.add('alert-success');
+                                        alertDiv.classList.add('d-block');
+
+
+
+                                        setTimeout(() => {
+                                            alertDiv.innerHTML = '';
+                                            alertDiv.classList.remove('alert');
+                                            alertDiv.classList.remove('alert-success');
+                                        }, 10000)
+
+                                    }
+                                })
+
+                        });
+
+                    </script>
+        </body>
+
+        </html>

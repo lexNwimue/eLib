@@ -1,0 +1,144 @@
+<%- include('./layouts/admin_layout/header.ejs') %>
+    <%- include('./layouts/admin_layout/sidebar.ejs') %>
+
+        <body class="skin-blue">
+            <div class="wrapper">
+                <div class="content-wrapper" style="min-height: 1283px;">
+                    <!-- Content Header (Page header) -->
+                    <section class="content-header">
+                        <h1>
+                            Admin Dashboard > Book > <%=book.title%>
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="active">Dashboard</li>
+                        </ol>
+                    </section>
+
+                    <!-- Main content -->
+                    <div class="container">
+                        <section class="content">
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4>Written by: <%=book.author%>
+                                            </h4>
+                                            <h4>Publisher: <%=book.publisher%>
+                                            </h4>
+                                            <h4>Category: <%=book.categories%>
+                                            </h4>
+                                            <h4>Status: <%=book.status%>
+                                            </h4>
+                                            <h4>Date Published: <%=book.createdAt.toLocaleDateString()%>
+                                            </h4>
+
+                                            <button class="btn btn-default edit-btn">Edit</button>
+                                            <br>
+                                            <br>
+                                            <div class="flex form-div">
+
+                                                <form method="POST" id="form" action="/dashboard/view-books/"
+                                                    + "<%=book._id%>">
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <label name='title'>Title: </label>
+                                                            <input type="text" class="form-control" id="title">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label name='author'>Author</label>
+                                                            <input type="text" class="form-control" id="author">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label name='publisher'>Publisher</label>
+                                                            <input type="text" class="form-control" id="publisher">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <label>Status: </label>
+                                                            <div class="radio">
+                                                                <label class="radio-inline"><input type="radio" required
+                                                                        name="status" value='available' id="available">
+                                                                    Available</label>
+                                                                <label class="radio-inline"><input type="radio" required
+                                                                        name="status" value='unavailable'
+                                                                        id="unavailable"> Unavailable</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label name='categories'>Categories: </label>
+                                                            <input type="text" class="form-control" id="categories">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label name='author'>Date Published: </label>
+                                                            <input type="date" class="form-control" id="date">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col lg-12">
+                                                            <button class="btn btn-primary"
+                                                                id="submit-btn">Submit</button>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section> <!-- /.content -->
+                    </div>
+                </div>
+            </div>
+            <%- include('./layouts/admin_layout/footer.ejs') %>
+                <script>
+                    $(document).ready(function () {
+                        $('.form-div').hide();
+                        $('.edit-btn').click(() => {
+                            $('.form-div').toggle();
+                        });
+
+                        $('#title').val('<%=book.title%>');
+                        $('#author').val('<%=book.author%>');
+                        $('#publisher').val('<%=book.publisher%>');
+                        $('#categories').val('<%=book.categories%>');
+
+                        $('#form').submit(e => {
+                            e.preventDefault();
+
+                            const id = '<%=book._id%>';
+                            const title = $('#title').val();
+                            const author = $('#author').val();
+                            const publisher = $('#publisher').val();
+                            const updatedAt = new Date($('#date').val());
+                            const categories = $('#categories').val();
+                            const status = $('input[name = status]:checked').val();
+                            const endpoint = $(this).attr('action');
+
+                            if (!status) {
+                                alert('Please fill all fields');
+                            }
+
+                            $.post(endpoint, { id, title, author, publisher, status, categories, endpoint, updatedAt })
+                                .done((response) => {
+                                    console.log('POST Updated');
+                                    console.log(response);
+                                })
+
+                        });
+
+                    });
+
+                </script>
+        </body>
+
+        </html>
