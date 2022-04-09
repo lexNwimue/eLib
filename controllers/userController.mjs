@@ -71,7 +71,7 @@ const user_signin_get = (req, res) => {
 }
 const user_signin_post = (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/dashboard/user',
+        successRedirect: '/dashboard/admin',
         failureRedirect: '/user/signin',
         failureFlash: true,
     })(req, res, next);

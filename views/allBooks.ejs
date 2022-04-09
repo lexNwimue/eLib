@@ -23,7 +23,10 @@
                                     <div class="box">
                                         <div class="box-header">
                                         </div><!-- /.box-header -->
-                                        <div class="box-body ">
+                                        <a data-toggle='modal' data-target='#add-book-modal' style="cursor: pointer;" class="btn btn-primary mb-2"><i
+                                            class="fa fa-plus"></i> Add
+                                        Books</a>
+                                        <div class="box-body "> <br>
                                             <ul class="nav nav-tabs">
                                                 <li class="nav-item active">
                                                     <a href="#all-users" class="nav-link" data-toggle="tab">All
@@ -42,58 +45,9 @@
 
                                             <!-- Tab Panes -->
                                             <div class="tab-content">
-                                                <div class="tab-pane active" id="all-users">
-                                                    <table id="example1"
-                                                        class="table table-bordered table-striped responsive table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-center">S/N</th>
-                                                                <th class="text-center">Title</th>
-                                                                <th class="text-center">Author</th>
-                                                                <th class="text-center">Publisher</th>
-                                                                <th class="text-center">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% var i=1; %>
-                                                                <% books.forEach(book=> { %>
+                                                <div class="tab-pane active" id="all-books">
+<div id="book-list"></div>
 
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%= i++; %>.
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= book.title %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= book.author %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= book.publisher %>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            <div class="btn-group">
-                                                                                <a class="btn btn-info" target="blank" onclick="console.log(1)" href="/dashboard/view-books/<%=book._id%>"><i
-                                                                                        class="fa fa-eye"></i>
-                                                                                        
-                                                                                </a>
-                                                                                <button data-id="<%=book._id%>"
-                                                                                    data-name="<%=book.title%>"
-                                                                                    class="btn btn-danger delete-book"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#delete-book-modal"><span
-                                                                                        class="fa fa-trash delete-span"></span></button>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <% }) %>
-                                                        </tbody>
-                                                    </table>
-
-                                                </div>
-                                                <div class="tab-pane container fade" id="owing-users">Owing Users</div>
-                                                <div class="tab-pane container fade" id="non-owing-users">Non-Owing
-                                                    Users
                                                 </div>
                                             </div>
                                         </div>
@@ -129,6 +83,61 @@
                                 </div>
                             </div>
                     </section><!-- /.content -->
+                </div>
+                <div id="add-book-modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title text-center">Add New Book</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                <form method="post" name="myform" class="signup_validate mr-5 ml-5">
+                
+                                    <div class="form-group input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-book"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Book Title" name="title" id="title" required>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Author" name="author" id="author" required>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-print"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Publisher" name="publisher" id="publisher" required>
+                                    </div>
+                
+                                    <div class="input-group form-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-list-alt"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Categories" name="categories" id="categories" required>
+                                    </div>
+                                    <p><strong>Borrow Status</strong></p>
+                                    <div class="form-group radio">
+                                        <label class="radio-inline"><input type="radio" value="Available" name="status" id="status"
+                                                checked>Available</label>
+                                        <label class="radio-inline"><input type="radio" value="Unavailable" name="status" id="status"
+                                                disabled>Unavailable</label>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <input type="submit" class="btn btn-success btn-block signup-btn" value="Add to Library" id="add-book" />
+                                    </div>
+                                </form>
+                                </p>
+                            </div>
+                        </div>
+                
+                    </div>
                 </div>
                 <%- include('./layouts/admin_layout/footer.ejs') %>
 
