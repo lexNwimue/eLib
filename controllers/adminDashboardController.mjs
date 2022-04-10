@@ -66,10 +66,10 @@ const add_book_post = (req, res) => {
 
   newBook
     .save()
-    .then((result) => {
+    .then((book) => {
       console.log(newBook.title + " saved to DB");
       //req.flash('success_msg', 'You have successfully registered');
-      res.json(result);
+      res.json(book);
     })
     .catch((e) => res.json(e));
 };
