@@ -74,12 +74,12 @@
                                                                         </td>
                                                                         <td class="text-center">
                                                                             <div class="btn-group">
-                                                                                <a class="btn btn-info" target="blank" onclick="console.log(1)" href="/dashboard/view-books/<%=book._id%>"><i
+                                                                                <a class="btn btn-info" target="blank" href="/dashboard/view-books/<%=book._id%>"><i
                                                                                         class="fa fa-eye"></i>
                                                                                         
                                                                                 </a>
-                                                                                <button data-id="<%= book._id %>"
-                                                                                    data-name="<%=book.title%>"
+                                                                                <button id="<%= book._id %>"
+                                                                                    data-title="<%=book.title%>"
                                                                                     class="btn btn-danger delete-book"
                                                                                     data-toggle="modal"
                                                                                     data-target="#delete-book-modal"><span
@@ -110,13 +110,12 @@
                                         </div>
                                         <div class="modal-body text-center">
                                             <p>Are you sure you want to delete?
-                                            <h4><span id="modal-book-id"></span></h4>
                                             <span id="modal-book-name"></span>
 
                                             <div
                                                 style="display: flex; justify-content: space-around; align-items: center; ">
-                                                <button class="btn btn-danger" id="delete-book-btn">Yes</button>
-                                                <button class="btn btn-secondary ml-5">No</button>
+                                                <button class="btn btn-danger" id="yes-delete-btn">Yes</button>
+                                                <button class="btn btn-secondary ml-5" data-dismiss="modal">No</button>
                                             </div>
 
                                             </p>
@@ -188,16 +187,20 @@
                     <script>
                         $(document).ready(function () {
                             // Getting the clicked book ID for the delete operation and loading the title into the modal header
-                            $('.delete-book').click(() => {
-                                bookID = $(this).data('id');
-                                bookTitle = $(this).data('name');
-                                $('#modal-book-id').html(bookTitle);
-                                console.log(bookID, bookTitle);
+                            let id;
+                            $('.delete-book').on('click', e => {
+                                book = e.target.closest('button'); // Get ID of clicked book;
+                                id = book.id;
+                                bookTitle = $(book).data('title');
+                                $('#modal-book-id').html(bookTitle); // Displays the title of the selected book in the modal
                             })
 
                             // When user clicks 'Yes' on delete book modal
-                            $('#delete-book-btn').click(() => {
-                                bookID = $(this).data('id');
+                            $('#yes-delete-btn').click(() => {
+                                console.log('You have confirmed to delete ' + id);
+                                $('#delete-book-modal').modal('hide');
+                                $.post('/dashboard/delete-book', {id})
+                                    .done(response => console.log(response));
 
                             })
                         });
