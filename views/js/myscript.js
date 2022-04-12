@@ -17,4 +17,21 @@ $(document).ready(() => {
       }
     );
   });
+
+  // Script for delete-book in allBooks.ejs
+  // Getting the clicked book ID for the delete operation and loading the title into the modal header
+  let id;
+  $(".delete-book").on("click", (e) => {
+    book = e.target.closest("button"); // Get ID of clicked book;
+    id = book.id;
+    bookTitle = $(book).data("title");
+    $("#modal-book-id").html(bookTitle); // Displays the title of the selected book in the modal
+  });
+
+  // When user clicks 'Yes' on delete book modal
+  $("#yes-delete-btn").click(() => {
+    console.log("You have confirmed to delete " + id);
+    $("#delete-book-modal").modal("hide");
+    $.post("/dashboard/delete-book", { id }).done();
+  });
 });

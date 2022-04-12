@@ -87,6 +87,12 @@ const edit_book_post = async (req, res) => {
   res.json(result);
 };
 
+const delete_book_post = async (req, res) => {
+  const id = req.body.id;
+  const response = await bookModel.deleteBook(id);
+  res.json(response);
+};
+
 const view_requests = (req, res) => {
   res.render("pendingRequests", {
     users,
@@ -104,6 +110,7 @@ export default {
   view_all_books_get,
   view_book_get,
   edit_book_post,
+  delete_book_post,
   add_book_post,
   view_requests,
 };
