@@ -49,12 +49,13 @@ const user_send_request_post = async (req, res) => {
 
     // Check of User already requested that same book
     if (await requestModel.checkRequestValidity(newRequest.userID, newRequest.bookID)) {
-        newRequest.save()
-            .then(result => {
-                console.log(newRequest.title + ' saved to DB');
-                res.json(result);
-            })
-            .catch(e => console.log(e))
+        try {
+            const result = await newRequest.save();
+        console.log('Request for ' + newRequest.title + ' made successfull!');
+        res.json(result);            
+        } catch (error) {
+            
+        }
     } else {
         res.json({ failed: 'Request already made...' });
     }
