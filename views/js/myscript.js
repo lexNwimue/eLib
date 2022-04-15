@@ -80,9 +80,10 @@ $('#borrow-btn').on('click', (e) => {
 
 
   // Scripts for cancel requests in userViewRequests.ejs
-  $("#cancel-request-btn").click(e => {
+  $(".cancel-request-btn").click(e => {
     e.preventDefault();
-    id = $(e.target).data('id');  // Get ID of clicked button;
+    id = e.target.id;  // Get ID of clicked button;
+    console.log(id);
     $.post("/dashboard/user/cancel-request", { id })
       .done( response => console.log(response));
   });

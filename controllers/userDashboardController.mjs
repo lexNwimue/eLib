@@ -9,13 +9,16 @@ const userCount = await userModel.getUserCount();
 const books = await bookModel.getBooks();
 const bookCount = await bookModel.getBookCount();
 const availableBooks = await bookModel.getAvailableBooks();
+let requests;
 
-const user_dashboard_get = (req, res) => {
+const user_dashboard_get = async (req, res) => {
+    requests = await requestModel.userRequests(req.user._id);
     res.render('user_dashboard', {
         title: 'Dashboard | User Profile',
         user: req.user,
         userCount,
-        bookCount
+        bookCount,
+        requests
     });
 }
 
@@ -24,12 +27,12 @@ const user_view_books_get = async (req, res) => {
         title: 'Dashboard | Book List',
         books,
         user: req.user,
-        bookCount
+        bookCount,
+        requests
     });
 }
 
 const user_view_requests_get = async (req, res) => {
-    const requests = await requestModel.userRequests(req.user._id);
     res.render('userViewRequests', {
         title: 'Dashboard | Requests',
         user: req.user,
@@ -44,7 +47,8 @@ const user_send_request_post = async (req, res) => {
     const newRequest = new requestModel.Requests({
         userID,
         bookID,
-        title
+        title,
+        requests
     });
 
     // Check of User already requested that same book
