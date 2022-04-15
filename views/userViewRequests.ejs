@@ -1,5 +1,5 @@
 <%- include('./layouts/user_layout/header.ejs') %>
-    <%- include('./layouts/user_layout/sidebar.ejs') %>
+<%- include('./layouts/user_layout/sidebar.ejs') %>
 
         <body class="skin-blue">
             <div class="wrapper">
@@ -65,11 +65,13 @@
                                                         </td>
                                                         <td>
                                                             <%= request.status %>
+                                                            <button id="cancel-request-btn" data-id="<%=request._id%>"  class="btn btn-warning">Cancel</button>
                                                         </td>
 
                                                     </tr>
 
                                                     <% });} catch (err) { console.log(err) }} %>
+                                                    <div id="userID" data-id="<%=user._id%>"></div>
                                         </tbody>
                                     </table>
 
@@ -80,50 +82,5 @@
                 </div>
 
                 <%- include('./layouts/user_layout/footer.ejs') %>
-                    <script>
-                        $('#borrow-btn').on('click', (e) => {
-                            e.preventDefault();
-                            const selectedBook = document.getElementById('available-books'),
-                                title = selectedBook.options[selectedBook.selectedIndex].text,
-                                bookID = selectedBook.options[selectedBook.selectedIndex].value,
-                                userID = '<%=user._id %>';
-                            console.log(title, bookID, userID);
-                            $.post('/dashboard/user/send-request', { userID, bookID, title })
-                                .done((data) => {
-                                    console.log(data);
-                                    if (data.failed) {
-                                        const alertDiv = document.getElementById('request-success');
-                                        alertDiv.innerHTML = 'Failed: Request already made!';
-                                        alertDiv.classList.add('alert-danger');
-                                        alertDiv.classList.add('d-block');
-
-
-                                        setTimeout(() => {
-                                            alertDiv.innerHTML = '';
-                                            alertDiv.classList.remove('alert');
-                                            alertDiv.classList.remove('alert-danger');
-                                        }, 6000)
-                                    }
-                                    else {
-                                        const alertDiv = document.getElementById('request-success');
-                                        alertDiv.innerHTML = 'Request sent successfully...';
-                                        alertDiv.classList.add('alert-success');
-                                        alertDiv.classList.add('d-block');
-
-
-
-                                        setTimeout(() => {
-                                            alertDiv.innerHTML = '';
-                                            alertDiv.classList.remove('alert');
-                                            alertDiv.classList.remove('alert-success');
-                                        }, 10000)
-
-                                    }
-                                })
-
-                        });
-
-                    </script>
         </body>
-
         </html>

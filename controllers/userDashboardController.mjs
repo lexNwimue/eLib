@@ -51,8 +51,9 @@ const user_send_request_post = async (req, res) => {
     if (await requestModel.checkRequestValidity(newRequest.userID, newRequest.bookID)) {
         try {
             const result = await newRequest.save();
-        console.log('Request for ' + newRequest.title + ' made successfull!');
-        res.json(result);            
+            console.log('Request for ' + newRequest.title + ' made successfull!');
+            console.log(result);
+            res.json({success: result});            
         } catch (error) {
             
         }
@@ -61,9 +62,24 @@ const user_send_request_post = async (req, res) => {
     }
 }
 
+const user_cancel_request_delete = async (req, res) => {
+    try {
+        const userID = req.user._id;
+        const requestID = req.body.id;
+        const result = await requestModel.cancelRequest(userID, requestID);
+        res.json(result);    
+    } catch (error) {
+        console.log(err);
+        res.json({failed: err})
+    }
+    
+}
+
 export default {
     user_dashboard_get,
     user_view_books_get,
     user_view_requests_get,
-    user_send_request_post
+    user_send_request_post,
+    user_cancel_request_delete
 };
+

@@ -34,4 +34,56 @@ $(document).ready(() => {
     $("#delete-book-modal").modal("hide");
     $.post("/dashboard/delete-book", { id }).done();
   });
+
+  // userViewRequests: Implementing borrow functionality on borrow button click
+$('#borrow-btn').on('click', (e) => {
+    e.preventDefault();
+    const selectedBook = document.getElementById('available-books'),
+        title = selectedBook.options[selectedBook.selectedIndex].text,
+        bookID = selectedBook.options[selectedBook.selectedIndex].value;
+        
+        // I could not figure out a way to get EJS values inside this .js file, so I had to improvise
+        // and set the EJS value as a data-id in the EJS file, the value of which I called in the .js file
+        const userID = $('#userID').data('id');
+    
+    console.log(title, bookID, userID);
+    $.post('/dashboard/user/send-request', { userID, bookID, title })
+        .done((response) => {
+            if (response.failed) {
+                const alertDiv = document.getElementById('request-success');
+                alertDiv.innerHTML = 'Failed: Request already made!';
+                alertDiv.classList.add('alert-danger');
+                alertDiv.classList.add('d-block');
+
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                    alertDiv.classList.remove('alert');
+                    alertDiv.classList.remove('alert-danger');
+                }, 6000)
+            }
+            else {
+                const alertDiv = document.getElementById('request-success');
+                alertDiv.innerHTML = 'Request sent successfully...';
+                alertDiv.classList.add('alert-success');
+                alertDiv.classList.add('d-block');
+
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                    alertDiv.classList.remove('alert');
+                    alertDiv.classList.remove('alert-success');
+                }, 5000)
+
+            }
+        })
+
+});
+
+
+  // Scripts for cancel requests in userViewRequests.ejs
+  $("#cancel-request-btn").click(e => {
+    e.preventDefault();
+    id = $(e.target).data('id');  // Get ID of clicked button;
+    $.post("/dashboard/user/cancel-request", { id })
+      .done( response => console.log(response));
+  });
 });

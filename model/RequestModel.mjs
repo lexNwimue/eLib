@@ -38,7 +38,6 @@ const getRequests = async () => {
 
 const checkRequestValidity = async (uID, bID) => {
     try {
-
         // Ensure user does not request same book twice or more 
         await mongoose.connect(mongodb, { useNewUrlParser: true, useUnifiedTopology: true });
         let result = await Requests.find({ $and: [{ userID: uID }, { bookID: bID }] });
@@ -62,10 +61,21 @@ const userRequests = async (uID) => {
     }
 }
 
+const cancelRequest = async (uID, reqID) => {
+    try {
+        await mongoose.connect(mongodb, { useNewUrlParser: true, useUnifiedTopology: true });
+        let result = await Requests.findOneAndDelete({ $and: [{ userID: uID }, { _id: reqID }] });
+        return result;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 
 export default {
     Requests,
     getRequests,
     checkRequestValidity,
-    userRequests
+    userRequests,
+    cancelRequest
 };
