@@ -112,6 +112,21 @@ const view_requests = async (req, res) => {
   });
 };
 
+// View a specific request using request id
+const view_specific_request = async (req, res) => {
+  const id = req.params.id;
+  const request = await requestModel.getSpecificRequest(id);
+  res.render('requestDetails', {
+    request,
+    title: 'Request', 
+    user: req.user,
+    users,
+    books
+  });
+  
+}
+
+
 export default {
   view_dashboard,
   view_user_get,
@@ -121,4 +136,5 @@ export default {
   delete_book_post,
   add_book_post,
   view_requests,
+  view_specific_request
 };

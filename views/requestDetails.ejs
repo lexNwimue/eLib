@@ -1,0 +1,36 @@
+<%- include('./layouts/admin_layout/header.ejs') %>
+<%- include('./layouts/admin_layout/sidebar.ejs') %>
+
+<body class="skin-blue">
+    <div class="wrapper">
+        <div class="content-wrapper" style="min-height: 1283px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Dashboard</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <div class="container-fluid" >
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h2>
+                                        Request for  <code><%= request.bookTitle %></code>  by <code><%=request.username%></code>
+                                    </h2>
+                                    Request Data here
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section> <!-- /.content -->
+            </div>
+        </div>
+    </div>
+    <%- include('./layouts/admin_layout/footer.ejs') %>
+</body>
+</html>

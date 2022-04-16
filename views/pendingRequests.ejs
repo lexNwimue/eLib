@@ -76,18 +76,15 @@
 
                                                                                                                 <td class="text-center">
                                                             <div class="btn-group">
-                                                                <button id="<%= request._id %>"
-                                                                    class="btn btn-success"
-                                                                    data-toggle="modal"
-                                                                    data-target="#delete-book-modal">
-                                                                    <span class="fa fa-check delete-span"></span>
+                                                                <button 
+                                                                    class="btn btn-success approve-btn fa fa-check"
+                                                                    id="<%= request._id %>">
                                                                 </button>
-                                                                <a class="btn btn-info" target="blank" href="/dashboard/view-request/<%=request._id%>"><i
+                                                                <a class="btn btn-info" target="blank" href="/dashboard/requests/<%=request._id%>"><i
                                                                     class="fa fa-eye"></i>
                                                                     
                                                                 </a>
-                                                                <button id="<%= request._id %>" class="btn btn-danger delete-book">
-                                                                    <span class="fa fa-remove"></span>
+                                                                <button id="decline-btn" class="btn btn-danger delete-book decline-btn fa fa-remove" id="<%= request._id %>">
                                                                 </button>
                                                             </div>
                                                         </td>

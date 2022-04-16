@@ -84,4 +84,3 @@ export default {
     user_send_request_post,
     user_cancel_request_delete
 };
-

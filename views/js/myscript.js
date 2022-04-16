@@ -89,4 +89,12 @@ $('#borrow-btn').on('click', (e) => {
     $.post("/dashboard/user/cancel-request", { id })
       .done( response => console.log(response));
   });
+
+  // Scripts for pendingRequests.ejs
+  // Approving user requests
+  $('.approve-btn').click(e => {
+    id = e.target.id;
+    console.log(id);
+
+  });
 });

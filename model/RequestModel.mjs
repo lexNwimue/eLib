@@ -77,11 +77,22 @@ const cancelRequest = async (uID, reqID) => {
     }
 }
 
+const getSpecificRequest = async (id) => {
+    try{
+    //    await mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true});
+        let request = await Requests.findById({_id: id});
+        return request;
+    } catch(err){
+        console.log(err);
+    }
+}
+
 
 export default {
     Requests,
     getRequests,
     checkRequestValidity,
     userRequests,
-    cancelRequest
+    cancelRequest,
+    getSpecificRequest
 };
