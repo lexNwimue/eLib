@@ -19,7 +19,7 @@ const view_user_get = (req, res) => {
 };
 
 const view_dashboard = (req, res) => {
-  res.render("allUsers", {
+  res.render("admin_dashboard", {
     users,
     user: req.user,
     userCount,
@@ -74,17 +74,22 @@ const add_book_post = (req, res) => {
     .catch((e) => res.json(e));
 };
 const edit_book_post = async (req, res) => {
-  const id = req.params.id;
-  const edit = {};
-  edit.title = req.body.title;
-  edit.author = req.body.author;
-  edit.publisher = req.body.publisher;
-  edit.categories = req.body.categories;
-  edit.status = req.body.status;
+  try {
+    const id = req.params.id;
+    const edit = {};
+    edit.title = req.body.title;
+    edit.author = req.body.author;
+    edit.publisher = req.body.publisher;
+    edit.categories = req.body.categories;
+    edit.status = req.body.status;
 
-  const result = await bookModel.updateBook(id, edit);
-  console.log("Result: " + result);
-  res.json(result);
+    const result = await bookModel.updateBook(id, edit);
+    console.log("Result: " + result);
+    res.json({success: result});
+  } catch (err) {
+      console.log(err);
+      res.json({failed: err})
+  }
 };
 
 const delete_book_post = async (req, res) => {

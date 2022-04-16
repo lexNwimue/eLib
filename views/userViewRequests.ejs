@@ -1,5 +1,5 @@
 <%- include('./layouts/user_layout/header.ejs') %>
-    <%- include('./layouts/user_layout/sidebar.ejs') %>
+<%- include('./layouts/user_layout/sidebar.ejs') %>
 
         <body class="skin-blue">
             <div class="wrapper">
@@ -37,21 +37,20 @@
                             </div>
                             <div id="table-div" class="row">
                                 <div class="col-lg-12">
-                                    <h5>Request History: </h5>
-                                    <table id="requests-table"
-                                        class="table table-bordered table-striped responsive table-hover col-md-12">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">S/N</th>
-                                                <th class="text-center">Title</th>
-                                                <th class="text-center">Date Requested</th>
-                                                <th class="text-center">Request Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    <h4>Request History: </h4>
                                             <% var i=1; if (requests.length !==0) {%>
                                                 <% try { requests.forEach(request=> { %>
-
+                                                    <table id="requests-table"
+                                                        class="table table-bordered table-striped responsive table-hover col-md-12">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">S/N</th>
+                                                                <th class="text-center">Title</th>
+                                                                <th class="text-center">Date Requested</th>
+                                                                <th class="text-center">Request Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
                                                     <tr>
                                                         <td>
                                                             <%= i++; %>
@@ -65,11 +64,14 @@
                                                         </td>
                                                         <td>
                                                             <%= request.status %>
+                                                            <button id="<%=request._id%>"  class="btn btn-warning cancel-request-btn">Cancel</button>
                                                         </td>
 
                                                     </tr>
 
-                                                    <% });} catch (err) { }} %>
+                                                    <% });} catch (err) { console.log(err) }}%>
+
+                                                    <div id="userID" data-id="<%=user._id%>"></div>
                                         </tbody>
                                     </table>
 
@@ -80,50 +82,5 @@
                 </div>
 
                 <%- include('./layouts/user_layout/footer.ejs') %>
-                    <script>
-                        $('#borrow-btn').on('click', (e) => {
-                            e.preventDefault();
-                            const selectedBook = document.getElementById('available-books'),
-                                title = selectedBook.options[selectedBook.selectedIndex].text,
-                                bookID = selectedBook.options[selectedBook.selectedIndex].value,
-                                userID = '<%=user._id %>';
-                            console.log(title, bookID, userID);
-                            $.post('/dashboard/user/send-request', { userID, bookID, title })
-                                .done((data) => {
-                                    console.log(data);
-                                    if (data.failed) {
-                                        const alertDiv = document.getElementById('request-success');
-                                        alertDiv.innerHTML = 'Failed: Request already made!';
-                                        alertDiv.classList.add('alert-danger');
-                                        alertDiv.classList.add('d-block');
-
-
-                                        setTimeout(() => {
-                                            alertDiv.innerHTML = '';
-                                            alertDiv.classList.remove('alert');
-                                            alertDiv.classList.remove('alert-danger');
-                                        }, 6000)
-                                    }
-                                    else {
-                                        const alertDiv = document.getElementById('request-success');
-                                        alertDiv.innerHTML = 'Request sent successfully...';
-                                        alertDiv.classList.add('alert-success');
-                                        alertDiv.classList.add('d-block');
-
-
-
-                                        setTimeout(() => {
-                                            alertDiv.innerHTML = '';
-                                            alertDiv.classList.remove('alert');
-                                            alertDiv.classList.remove('alert-success');
-                                        }, 10000)
-
-                                    }
-                                })
-
-                        });
-
-                    </script>
         </body>
-
         </html>

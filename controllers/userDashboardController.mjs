@@ -9,13 +9,16 @@ const userCount = await userModel.getUserCount();
 const books = await bookModel.getBooks();
 const bookCount = await bookModel.getBookCount();
 const availableBooks = await bookModel.getAvailableBooks();
+let requests;
 
-const user_dashboard_get = (req, res) => {
+const user_dashboard_get = async (req, res) => {
+    requests = await requestModel.userRequests(req.user._id);
     res.render('user_dashboard', {
         title: 'Dashboard | User Profile',
         user: req.user,
         userCount,
-        bookCount
+        bookCount,
+        requests
     });
 }
 
@@ -24,12 +27,12 @@ const user_view_books_get = async (req, res) => {
         title: 'Dashboard | Book List',
         books,
         user: req.user,
-        bookCount
+        bookCount,
+        requests
     });
 }
 
 const user_view_requests_get = async (req, res) => {
-    const requests = await requestModel.userRequests(req.user._id);
     res.render('userViewRequests', {
         title: 'Dashboard | Requests',
         user: req.user,
@@ -44,25 +47,43 @@ const user_send_request_post = async (req, res) => {
     const newRequest = new requestModel.Requests({
         userID,
         bookID,
-        title
+        title,
+        requests
     });
 
     // Check of User already requested that same book
     if (await requestModel.checkRequestValidity(newRequest.userID, newRequest.bookID)) {
-        newRequest.save()
-            .then(result => {
-                console.log(newRequest.title + ' saved to DB');
-                res.json(result);
-            })
-            .catch(e => console.log(e))
+        try {
+            const result = await newRequest.save();
+            console.log('Request for ' + newRequest.title + ' made successfull!');
+            console.log(result);
+            res.json({success: result});            
+        } catch (error) {
+            
+        }
     } else {
         res.json({ failed: 'Request already made...' });
     }
+}
+
+const user_cancel_request_delete = async (req, res) => {
+    try {
+        const userID = req.user._id;
+        const requestID = req.body.id;
+        const result = await requestModel.cancelRequest(userID, requestID);
+        res.json(result);    
+    } catch (error) {
+        console.log(err);
+        res.json({failed: err})
+    }
+    
 }
 
 export default {
     user_dashboard_get,
     user_view_books_get,
     user_view_requests_get,
-    user_send_request_post
+    user_send_request_post,
+    user_cancel_request_delete
 };
+
