@@ -1,5 +1,6 @@
 import bookModel from "../model/BookModel.mjs";
 import userModel from "../model/UserModel.mjs";
+import requestModel from '../model/RequestModel.mjs'
 
 const users = await userModel.getUsers();
 const userCount = await userModel.getUserCount();
@@ -98,7 +99,8 @@ const delete_book_post = async (req, res) => {
   res.json(response);
 };
 
-const view_requests = (req, res) => {
+const view_requests = async (req, res) => {
+  const userRequests = await requestModel.getRequests();
   res.render("pendingRequests", {
     users,
     user: req.user,
@@ -106,6 +108,7 @@ const view_requests = (req, res) => {
     books,
     bookCount,
     title: "Dashboard | Requests",
+    userRequests
   });
 };
 

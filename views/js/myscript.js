@@ -40,15 +40,16 @@ $(document).ready(() => {
 $('#borrow-btn').on('click', (e) => {
     e.preventDefault();
     const selectedBook = document.getElementById('available-books'),
-        title = selectedBook.options[selectedBook.selectedIndex].text,
+        bookTitle = selectedBook.options[selectedBook.selectedIndex].text,
         bookID = selectedBook.options[selectedBook.selectedIndex].value;
         
         // I could not figure out a way to get EJS values inside this .js file, so I had to improvise
         // and set the EJS value as a data-id in the EJS file, the value of which I called in the .js file
         const userID = $('#userID').data('id');
+        const username = $('#username').data('id');
     
-    console.log(title, bookID, userID);
-    $.post('/dashboard/user/send-request', { userID, bookID, title })
+    console.log(username, bookTitle, bookID, userID);
+    $.post('/dashboard/user/send-request', { userID, username, bookID, bookTitle })
         .done((response) => {
             if (response.failed) {
                 const alertDiv = document.getElementById('request-success');

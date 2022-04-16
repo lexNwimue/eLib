@@ -43,20 +43,18 @@ const user_view_requests_get = async (req, res) => {
 }
 
 const user_send_request_post = async (req, res) => {
-    const { userID, bookID, title } = req.body;
+    const { userID, username, bookID, bookTitle } = req.body;
     const newRequest = new requestModel.Requests({
         userID,
+        username,
         bookID,
-        title,
-        requests
+        bookTitle
     });
 
     // Check of User already requested that same book
     if (await requestModel.checkRequestValidity(newRequest.userID, newRequest.bookID)) {
         try {
             const result = await newRequest.save();
-            console.log('Request for ' + newRequest.title + ' made successfull!');
-            console.log(result);
             res.json({success: result});            
         } catch (error) {
             

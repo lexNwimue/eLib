@@ -8,11 +8,15 @@ const requestsSchema = new Schema({
         type: String,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
     bookID: {
         type: String,
         required: true
     },
-    title: {
+    bookTitle: {
         type: String,
         required: true
     },
@@ -30,7 +34,7 @@ const getRequests = async () => {
     try {
         await mongoose.connect(mongodb, { useNewUrlParser: true, useUnifiedTopology: true })
         let result = await Requests.find({})
-        return { result, requestsCount: result.length };
+        return result;
     } catch (err) {
         console.error("Error encountered getting requests: ", err);
     }

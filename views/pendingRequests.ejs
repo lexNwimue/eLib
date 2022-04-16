@@ -40,9 +40,64 @@
                                             <!-- Tab Panes -->
                                             <div class="tab-content">
                                                 <div class="tab-pane active" id="all-users">
-                                                    Requests List
+                                                    <table  id="requests-table"
+                                                            class="table table-bordered table-striped responsive table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">S/N</th>
+                                                        <th class="text-center">User</th>
+                                                        <th class="text-center">Book Requested</th>
+                                                        <th class="text-center">Date</th>
+                                                        <th class="text-center">Request Status</th>
+                                                        <th class="text-center">Action</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                            <% var i=1; if (userRequests.length !==0) {%>
+                                                <% try { userRequests.forEach(request=> { %>
 
-                                                </div>
+                                                    <tr>
+                                                        <td>
+                                                            <%= i++; %>
+                                                        </td>
+                                                        <td>
+                                                            <%= request.username %>
+                                                        </td>
+                                                        <td>
+                                                            <%= request.bookTitle %>
+                                                        </td>
+                                                        <td>
+                                                            <%= request.createdAt.toLocaleDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= request.status %>
+                                                        </td>
+
+                                                                                                                <td class="text-center">
+                                                            <div class="btn-group">
+                                                                <button id="<%= request._id %>"
+                                                                    class="btn btn-success"
+                                                                    data-toggle="modal"
+                                                                    data-target="#delete-book-modal">
+                                                                    <span class="fa fa-check delete-span"></span>
+                                                                </button>
+                                                                <a class="btn btn-info" target="blank" href="/dashboard/view-request/<%=request._id%>"><i
+                                                                    class="fa fa-eye"></i>
+                                                                    
+                                                                </a>
+                                                                <button id="<%= request._id %>" class="btn btn-danger delete-book">
+                                                                    <span class="fa fa-remove"></span>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <% });} catch (err) { }} %>
+                                        </tbody>
+                                                </table>
+                                            </div>
                                                 <div class="tab-pane container fade" id="owing-users">Owing Users</div>
                                                 <div class="tab-pane container fade" id="non-owing-users">Non-Owing
                                                     Users

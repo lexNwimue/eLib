@@ -39,8 +39,7 @@
                                 <div class="col-lg-12">
                                     <h4>Request History: </h4>
                                             <% var i=1; if (requests.length !==0) {%>
-                                                <% try { requests.forEach(request=> { %>
-                                                    <table id="requests-table"
+                                                <table id="requests-table"
                                                         class="table table-bordered table-striped responsive table-hover col-md-12">
                                                         <thead>
                                                             <tr>
@@ -50,7 +49,8 @@
                                                                 <th class="text-center">Request Status</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody></tbody>
+                                                <% try { requests.forEach(request=> { %>
                                                     <tr>
                                                         <td>
                                                             <%= i++; %>
