@@ -48,23 +48,13 @@ const user_send_request_post = async (req, res) => {
         userID,
         username,
         bookID,
-<<<<<<< HEAD
         bookTitle
-=======
-        title,
-        requests
->>>>>>> b361226f6c75e15af22e50cf8b5c72733af25163
     });
 
     // Check of User already requested that same book
     if (await requestModel.checkRequestValidity(newRequest.userID, newRequest.bookID)) {
         try {
             const result = await newRequest.save();
-<<<<<<< HEAD
-=======
-            console.log('Request for ' + newRequest.title + ' made successfull!');
-            console.log(result);
->>>>>>> b361226f6c75e15af22e50cf8b5c72733af25163
             res.json({success: result});            
         } catch (error) {
             
@@ -93,9 +83,4 @@ export default {
     user_view_requests_get,
     user_send_request_post,
     user_cancel_request_delete
-<<<<<<< HEAD
 };
-=======
-};
-
->>>>>>> b361226f6c75e15af22e50cf8b5c72733af25163

@@ -126,6 +126,12 @@ const view_specific_request = async (req, res) => {
   
 }
 
+const approve_request = async (req, res) => {
+  const id = req.body.id;
+  const result = await requestModel.changeStatus2Approved(id);
+  res.json(result);
+}
+
 
 export default {
   view_dashboard,
@@ -136,5 +142,6 @@ export default {
   delete_book_post,
   add_book_post,
   view_requests,
-  view_specific_request
+  view_specific_request,
+  approve_request
 };

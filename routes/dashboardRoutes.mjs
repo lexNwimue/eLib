@@ -15,6 +15,7 @@ router.post("/add-book", ensureAuthenticated, adminDashboardController.add_book_
 router.post("/delete-book", ensureAuthenticated, adminDashboardController.delete_book_post);
 router.get("/requests/:id", ensureAuthenticated, adminDashboardController.view_specific_request);
 router.get("/requests", ensureAuthenticated, adminDashboardController.view_requests);
+router.post('/approve-request', ensureAuthenticated, adminDashboardController.approve_request);
 
 
 // Routes for User Dashboard

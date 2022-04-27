@@ -77,10 +77,9 @@ const cancelRequest = async (uID, reqID) => {
     }
 }
 
-<<<<<<< HEAD
 const getSpecificRequest = async (id) => {
     try{
-    //    await mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true});
+       await mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true});
         let request = await Requests.findById({_id: id});
         return request;
     } catch(err){
@@ -88,18 +87,24 @@ const getSpecificRequest = async (id) => {
     }
 }
 
-=======
->>>>>>> b361226f6c75e15af22e50cf8b5c72733af25163
+const changeStatus2Approved = async (id) => {
+    try{
+        await mongoose.connect(mongodb, { useNewUrlParser: true, useUnifiedTopology: true });
+        const result = await Requests.findByIdAndUpdate({id}, {status: 'Approved'});
+        console.log(result);
+        return result;
+    } catch(err){
+        console.log(err);
+    }
+}
+
 
 export default {
     Requests,
     getRequests,
     checkRequestValidity,
     userRequests,
-<<<<<<< HEAD
     cancelRequest,
-    getSpecificRequest
-=======
-    cancelRequest
->>>>>>> b361226f6c75e15af22e50cf8b5c72733af25163
+    getSpecificRequest,
+    changeStatus2Approved
 };

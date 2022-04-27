@@ -10,8 +10,9 @@ $(document).ready(() => {
     const endpoint = "/dashboard/add-book";
     console.log(title, author, publisher, categories, status);
 
-    $.post(endpoint, { title, author, publisher, categories, status }).done(
-      (book) => {
+    $.post(endpoint, { title, author, publisher, categories, status })
+      .done(
+        (book) => {
         console.log(book);
         $("#add-book-modal").modal("hide");
       }
@@ -37,49 +38,46 @@ $(document).ready(() => {
   });
 
   // userViewRequests: Implementing borrow functionality on borrow button click
-$('#borrow-btn').on('click', (e) => {
-    e.preventDefault();
-    const selectedBook = document.getElementById('available-books'),
-        bookTitle = selectedBook.options[selectedBook.selectedIndex].text,
-        bookID = selectedBook.options[selectedBook.selectedIndex].value;
-        
-        // I could not figure out a way to get EJS values inside this .js file, so I had to improvise
-        // and set the EJS value as a data-id in the EJS file, the value of which I called in the .js file
-        const userID = $('#userID').data('id');
-        const username = $('#username').data('id');
-    
-    console.log(username, bookTitle, bookID, userID);
-    $.post('/dashboard/user/send-request', { userID, username, bookID, bookTitle })
-        .done((response) => {
-            if (response.failed) {
-                const alertDiv = document.getElementById('request-success');
-                alertDiv.innerHTML = 'Failed: Request already made!';
-                alertDiv.classList.add('alert-danger');
-                alertDiv.classList.add('d-block');
+  $('#borrow-btn').on('click', (e) => {
+      e.preventDefault();
+      const selectedBook = document.getElementById('available-books'),
+          bookTitle = selectedBook.options[selectedBook.selectedIndex].text,
+          bookID = selectedBook.options[selectedBook.selectedIndex].value;
+          
+          // I could not figure out a way to get EJS values inside this .js file, so I had to improvise
+          // and set the EJS value as a data-id in the EJS file, the value of which I called in the .js file
+          const userID = $('#userID').data('id');
+          const username = $('#username').data('id');
+      
+      console.log(username, bookTitle, bookID, userID);
+      $.post('/dashboard/user/send-request', { userID, username, bookID, bookTitle })
+          .done((response) => {
+              if (response.failed) {
+                  const alertDiv = document.getElementById('request-success');
+                  alertDiv.innerHTML = 'Failed: Request already made!';
+                  alertDiv.classList.add('alert-danger');
+                  alertDiv.classList.add('d-block');
 
-                setTimeout(() => {
-                    alertDiv.innerHTML = '';
-                    alertDiv.classList.remove('alert');
-                    alertDiv.classList.remove('alert-danger');
-                }, 6000)
-            }
-            else {
-                const alertDiv = document.getElementById('request-success');
-                alertDiv.innerHTML = 'Request sent successfully...';
-                alertDiv.classList.add('alert-success');
-                alertDiv.classList.add('d-block');
+                  setTimeout(() => {
+                      alertDiv.innerHTML = '';
+                      alertDiv.classList.remove('alert');
+                      alertDiv.classList.remove('alert-danger');
+                  }, 6000)
+              }
+              else {
+                  const alertDiv = document.getElementById('request-success');
+                  alertDiv.innerHTML = 'Request sent successfully...';
+                  alertDiv.classList.add('alert-success');
+                  alertDiv.classList.add('d-block');
 
-                setTimeout(() => {
-                    alertDiv.innerHTML = '';
-                    alertDiv.classList.remove('alert');
-                    alertDiv.classList.remove('alert-success');
-                }, 5000)
-
-            }
-        })
-
-});
-
+                  setTimeout(() => {
+                      alertDiv.innerHTML = '';
+                      alertDiv.classList.remove('alert');
+                      alertDiv.classList.remove('alert-success');
+                  }, 5000)
+              }
+          })
+  });
 
   // Scripts for cancel requests in userViewRequests.ejs
   $(".cancel-request-btn").click(e => {
@@ -94,7 +92,25 @@ $('#borrow-btn').on('click', (e) => {
   // Approving user requests
   $('.approve-btn').click(e => {
     id = e.target.id;
+    id = {id};
     console.log(id);
-
+    
+    fetch('/dashboard/approve-request', {
+      method: 'POST', 
+      body: JSON.stringify(id),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => console.log('Response data: ' + data))
   });
+
+  $('.decline-btn').click(e => {
+    id = e.target.id;
+    console.log(id);
+  });
+
+  // Activate all tooltips
+  $('[data-toggle = "tooltip"]').tooltip();
 });
