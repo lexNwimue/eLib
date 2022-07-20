@@ -91,24 +91,15 @@ $(document).ready(() => {
   // Scripts for pendingRequests.ejs
   // Approving user requests
   $('.approve-btn').click(e => {
-    id = e.target.id;
-    id = {id};
-    console.log(id);
-    
-    fetch('/dashboard/approve-request', {
-      method: 'POST', 
-      body: JSON.stringify(id),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => console.log('Response data: ' + data))
+
+    $.post('/dashboard/approve-request', {id})
+      .done(response => console.log(response))
+
   });
 
   $('.decline-btn').click(e => {
     id = e.target.id;
-    console.log(id);
+    //console.log(id);
   });
 
   // Activate all tooltips
