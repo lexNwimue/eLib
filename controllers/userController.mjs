@@ -1,6 +1,5 @@
 import userModel from "../model/UserModel.mjs";
 import bcrypt from "bcrypt";
-import passport from "passport";
 import jwt from "jsonwebtoken";
 
 // Handle Signup
@@ -8,14 +7,14 @@ const user_signup_get = (req, res) => {
   res.render("signup", { title: "User Dashboard" });
 };
 
-const expirationDuration = 7 * 24 * 60 * 60;
-const createJWTtoken = (id) => {
-  return jwt.sign({ id }, "my secret code goes here", {
-    expiresIn: expirationDuration,
-  });
-};
-
 const user_signup_post = (req, res) => {
+  const expirationDuration = 7 * 24 * 60 * 60;
+  const createJWTtoken = (id) => {
+    return jwt.sign({ id }, "my secret code goes here", {
+      expiresIn: expirationDuration,
+    });
+  };
+
   const errors = [];
   let password = req.body.password;
   const password2 = req.body.password2;
@@ -69,12 +68,36 @@ const user_signup_post = (req, res) => {
 const user_signin_get = (req, res) => {
   res.render("signin");
 };
-const user_signin_post = (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/dashboard/admin",
-    failureRedirect: "/user/signin",
-    failureFlash: true,
-  })(req, res, next);
+const user_signin_post = (req, res) => {
+  //   const { email, password } = req.body;
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log(req.body);
+  userModel.User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        console.log(email + " is not a registered email");
+        res.json({ err: email + " is not registered" });
+        return;
+      }
+
+      bcrypt
+        .compare(password, user.password)
+        .then((result) => {
+          const token = createJWTtoken(user._id);
+          res.cookie("jwt", token, {
+            httpOnly: true,
+            maxAge: expirationDuration * 1000,
+          });
+          res.json({ success: user._id });
+        })
+        .catch((err) => {
+          res.json({ err: "Incorrect password" });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const user_signout_get = (req, res) => {
