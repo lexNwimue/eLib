@@ -127,7 +127,8 @@ const view_specific_request = async (req, res) => {
 }
 
 const approve_request = async (req, res) => {
-  const id = req.body.id;
+  const {id} = req.body;
+  console.log(id);
   const result = await requestModel.changeStatus2Approved(id);
   res.json(result);
 }

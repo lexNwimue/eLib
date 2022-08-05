@@ -1,93 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>eLib | Login </title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>eLib | Login</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="./elibLogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./elibLogo.png" />
     <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="/vendor/waves/waves.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+    <link rel="stylesheet" href="/vendor/waves/waves.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
 
-<body>
-
+  <body>
     <div id="preloader">
-        <div class="sk-three-bounce">
-            <div class="sk-child sk-bounce1"></div>
-            <div class="sk-child sk-bounce2"></div>
-            <div class="sk-child sk-bounce3"></div>
-        </div>
+      <div class="sk-three-bounce">
+        <div class="sk-child sk-bounce1"></div>
+        <div class="sk-child sk-bounce2"></div>
+        <div class="sk-child sk-bounce3"></div>
+      </div>
     </div>
 
     <div>
-
-        <div class="authincation section-padding">
-            <div class="container h-100">
-                <div class="row justify-content-center h-100 align-items-center">
-                    <div class="col-xl-5 col-md-6">
-                        <div class="auth-form card">
-                            <div class="text-center text-success pt-5">
-                                <% if(success_msg!='' ){%>
-                                    <p>
-                                        <%= success_msg %>
-                                    </p>
-                                    <% }%>
-
-                                        <% if(error_msg!='' ){%>
-                                            <p>
-                                                <%= error_msg %>
-                                            </p>
-                                            <% }%>
-                            </div>
-                            <div class="card-header justify-content-center">
-                                <h4 class="card-title">Sign in</h4>
-                            </div>
-                            <div class="card-body">
-                                <form method="POST" name="myform" class="signin_validate" action="/user/signin">
-                                    <div class="form-group pl-2 pr-2">
-                                        <label class="">Email</label>
-                                        <input type="email" class="form-control" placeholder="hello@example.com"
-                                            name="email">
-                                    </div>
-                                    <div class="form-group pr-2 pl-2">
-                                        <label>Password</label>
-                                        <input type="password" class="form-control" placeholder="Password"
-                                            name="password">
-                                    </div>
-                                    <div class="form-row d-flex justify-content-between mt-4 mb-2">
-                                        <div class="form-group mb-0">
-                                            <label class="toggle pl-2">
-                                                <input class="toggle-checkbox" type="checkbox">
-                                                <span class="toggle-switch"></span>
-                                                <span class="toggle-label">Remember me</span>
-                                            </label>
-                                        </div>
-                                        <div class="form-group mb-0 pr-2">
-                                            <a href="reset.html">Forgot Password?</a>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <input type="submit" class="btn btn-success btn-block" value="Login">
-                                    </div>
-                                </form>
-                                <div class="new-account mt-3 text-center">
-                                    <p>Don't have an account? <a class="text-primary" href="/user/signup">Sign
-                                            up</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      <div class="authincation section-padding">
+        <div class="container h-100">
+          <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-xl-5 col-md-6">
+              <div class="auth-form card">
+                <div class="text-center text-success pt-5"></div>
+                <div class="card-header justify-content-center">
+                  <h4 class="card-title">Sign in</h4>
                 </div>
+                <div class="card-body">
+                  <form id="login-form" class="signin_validate">
+                    <div class="form-group pl-2 pr-2">
+                      <label class="">Email</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="hello@example.com"
+                        name="email"
+                        id="email"
+                      />
+                    </div>
+                    <div class="form-group pr-2 pl-2">
+                      <label>Password</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="Password"
+                        name="password"
+                        id="password"
+                      />
+                    </div>
+                    <div
+                      id="err-span"
+                      style="visibility: hidden; color: red; margin: auto"
+                    >
+                      Incorrect username of password
+                    </div>
+                    <div
+                      class="form-row d-flex justify-content-between mt-4 mb-2"
+                    >
+                      <div class="form-group mb-0">
+                        <label class="toggle pl-2">
+                          <input class="toggle-checkbox" type="checkbox" />
+                          <span class="toggle-switch"></span>
+                          <span class="toggle-label">Remember me</span>
+                        </label>
+                      </div>
+                      <div class="form-group mb-0 pr-2">
+                        <a href="#">Forgot Password?</a>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <input
+                        type="submit"
+                        class="btn btn-success btn-block"
+                        value="Login"
+                      />
+                    </div>
+                  </form>
+                  <div class="new-account mt-3 text-center">
+                    <p>
+                      Don't have an account?
+                      <a class="text-primary" href="/user/signup">Sign up</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
-
     <script src="/js/global.js"></script>
+    <script src="/js/signup_and_login.js"></script>
 
     <script src="/vendor/waves/waves.min.js"></script>
 
@@ -95,6 +104,5 @@
     <script src="/vendor/validator/validator-init.js"></script>
 
     <script src="/js/scripts.js"></script>
-</body>
-
+  </body>
 </html>

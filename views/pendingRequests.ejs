@@ -82,10 +82,17 @@
                                                                     title = "Approve Request"
                                                                     id="<%= request._id %>">
                                                                 </button>
-                                                                <a class="btn btn-info" target="blank" href="/dashboard/requests/<%=request._id%>" data-toggle="tooltip" title="View Request"><i
+                                                                <a class="btn btn-info" 
+                                                                    target="blank" 
+                                                                    href="/dashboard/requests/<%=request._id%>" 
+                                                                    data-toggle="tooltip" 
+                                                                    title="View Request"><i
                                                                     class="fa fa-eye"></i>    
                                                                 </a>
-                                                                <button class="btn btn-danger delete-book decline-btn fa fa-remove" id="<%= request._id %>" data-toggle="tooltip" title="Decline Request">
+                                                                <button class="btn btn-danger decline-btn fa fa-remove" 
+                                                                    id="<%= request._id %>" 
+                                                                    data-toggle="tooltip" 
+                                                                    title="Decline Request">
                                                                 </button>
                                                             </div>
                                                         </td>
