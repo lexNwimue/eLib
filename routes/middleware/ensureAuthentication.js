@@ -6,13 +6,18 @@ const ensureAuthentication = (req, res, next) => {
   if (!token) {
     res.redirect(301, "/user/signin");
   } else {
-    jwt.verify(token, "my secret code goes here", (err, verifiedToken) => {
-      if (err) {
-        res.redirect(301, "/user/signin");
-      } else {
-        next();
+    jwt.verify(
+      token,
+      "my secret code goes here",
+      async (err, verifiedToken) => {
+        if (err) {
+          res.redirect(301, "/user/signin");
+        } else {
+          const user = await userModel.User.findById(verifiedToken.id);
+          next();
+        }
       }
-    });
+    );
   }
 };
 

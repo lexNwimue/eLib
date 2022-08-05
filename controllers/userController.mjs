@@ -2,19 +2,19 @@ import userModel from "../model/UserModel.mjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const expirationDuration = 7 * 24 * 60 * 60;
+const createJWTtoken = (id) => {
+  return jwt.sign({ id }, "my secret code goes here", {
+    expiresIn: expirationDuration,
+  });
+};
+
 // Handle Signup
 const user_signup_get = (req, res) => {
   res.render("signup", { title: "User Dashboard" });
 };
 
 const user_signup_post = (req, res) => {
-  const expirationDuration = 7 * 24 * 60 * 60;
-  const createJWTtoken = (id) => {
-    return jwt.sign({ id }, "my secret code goes here", {
-      expiresIn: expirationDuration,
-    });
-  };
-
   const errors = [];
   let password = req.body.password;
   const password2 = req.body.password2;
@@ -69,35 +69,27 @@ const user_signin_get = (req, res) => {
   res.render("signin");
 };
 const user_signin_post = (req, res) => {
-  //   const { email, password } = req.body;
-  const email = req.body.email;
-  const password = req.body.password;
-  console.log(req.body);
-  userModel.User.findOne({ email })
-    .then((user) => {
-      if (!user) {
-        console.log(email + " is not a registered email");
-        res.json({ err: email + " is not registered" });
-        return;
-      }
-
-      bcrypt
-        .compare(password, user.password)
-        .then((result) => {
-          const token = createJWTtoken(user._id);
-          res.cookie("jwt", token, {
-            httpOnly: true,
-            maxAge: expirationDuration * 1000,
-          });
-          res.json({ success: user._id });
-        })
-        .catch((err) => {
-          res.json({ err: "Incorrect password" });
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  res.locals.user = null;
+  const { email, password } = req.body;
+  userModel.User.findOne({ email }).then(async (user) => {
+    if (!user) {
+      console.log(email + " is not a registered email");
+      res.json({ err: email + " is not registered" });
+      return;
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
+      const token = createJWTtoken(user._id);
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: expirationDuration * 1000,
+      });
+      res.locals.user = user;
+      res.redirect(301, "/dashboard/user");
+    } else {
+      res.json({ err: "Incorrect password" });
+    }
+  });
 };
 
 const user_signout_get = (req, res) => {

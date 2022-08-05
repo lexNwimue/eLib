@@ -3,6 +3,7 @@ import userRoutes from "./routes/userRoutes.mjs";
 import dashboardRoutes from "./routes/dashboardRoutes.mjs";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import { ensureAuthentication } from "./routes/middleware/ensureAuthentication.js";
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
+
+app.get("*", ensureAuthentication);
 app.get("/", (req, res) => {
   res.render("index");
 });
